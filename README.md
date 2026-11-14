@@ -1,5 +1,7 @@
 # Rap Name Generator
 
+![Tests](https://github.com/JkingDev88/rap-name-generator/actions/workflows/tests.yml/badge.svg)
+
 A Flask web app that generates hip-hop and rap names for aspiring artists who need inspiration for a pen name.
 
 ## Features

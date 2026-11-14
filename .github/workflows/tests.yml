@@ -25,3 +25,9 @@ jobs:
 
       - name: Run tests
         run: pytest -v
+
+      - name: Dependency vulnerability scan (pip-audit)
+        run: pip-audit -r requirements.txt
+
+      - name: Static code security scan (bandit)
+        run: bandit app.py --skip B311

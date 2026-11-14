@@ -63,7 +63,7 @@ Results: all expected headers were returned, the `<script>` seed was rejected wi
 - Flask's built-in development server is not meant for production. Deployment (Phase 5) will use a production WSGI server.
 - HTTPS is not forced locally (`force_https=False`). It should be enabled when deployed.
 - The development server reveals its software and version in the `Server` header. A production server setup can suppress this.
-- Tests run locally only. CI security scanning is planned for Phase 4.
+- Security scanning covers dependencies and static analysis only. There is no dynamic testing yet.
 ## Running the tests
 
 ```bash
@@ -78,6 +78,22 @@ The suite (13 tests) covers:
 - Name generation works with and without a seed
 - Invalid seeds (HTML tags, symbols, over-length input) return 400
 - The 11th request within a minute returns 429
+
+## Security scanning
+
+Every push runs these checks in GitHub Actions, alongside the tests:
+
+- **pip-audit** checks `requirements.txt` against known-vulnerability databases.
+- **bandit** statically analyses `app.py` for common security mistakes.
+
+Bandit rule B311 (use of the `random` module) is skipped on purpose. The app only uses `random` to pick words for rap names, so predictability has no security impact. Anything security-sensitive, such as session or reset tokens, must use the `secrets` module instead.
+
+To run the scans locally:
+
+```bash
+pip-audit -r requirements.txt
+bandit app.py --skip B311
+```
 
 ## Roadmap
 

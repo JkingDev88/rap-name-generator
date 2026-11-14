@@ -4,47 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rap Name Generator</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #111;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    #name {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin: 1.5rem 0;
-      min-height: 3rem;
-      text-align: center;
-    }
-    #name.error { font-size: 1.1rem; color: #ff6b6b; }
-    input {
-      font-size: 1rem;
-      padding: 0.7rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #444;
-      background: #222;
-      color: #fff;
-      margin-bottom: 1rem;
-      width: 16rem;
-      text-align: center;
-    }
-    button {
-      font-size: 1.1rem;
-      padding: 0.8rem 2rem;
-      border: none;
-      border-radius: 8px;
-      background: #f5c518;
-      cursor: pointer;
-    }
-    button:hover { background: #ffd84a; }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <h1>Rap Name Generator</h1>
@@ -53,21 +13,6 @@
   <button id="generate-btn">Generate Name</button>
   <div id="name">Click the button</div>
 
-  <script>
-    const nameEl = document.getElementById("name");
-    const seedEl = document.getElementById("seed");
-
-    document.getElementById("generate-btn").addEventListener("click", async () => {
-      const response = await fetch("/generate?seed=" + encodeURIComponent(seedEl.value));
-      const data = await response.json();
-      if (response.ok) {
-        nameEl.className = "";
-        nameEl.textContent = data.name;
-      } else {
-        nameEl.className = "error";
-        nameEl.textContent = data.error;
-      }
-    });
-  </script>
+ <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>
 </html>

@@ -1,9 +1,27 @@
 import random
 import re
 from flask import Flask, jsonify, render_template, request
-
+import os
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask_talisman import Talisman
 app = Flask(__name__)
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["60 per minute"],
+    storage_uri="memory://",
+)
 
+Talisman(
+    app,
+    content_security_policy={
+        "default-src": "'self'",
+        "style-src": "'self'",
+        "script-src": "'self'",
+    },
+    force_https=False,
+)
 PREFIXES = ["Lil", "Young", "MC", "Big", "Dr.", "Slim", "Kid", "Baby"]
 WORDS = ["Cipher", "Static", "Midnight", "Vandal", "Ghost", "Chrome",
          "Velvet", "Thunder", "Atlas", "Neon", "Riot", "Phantom"]
@@ -45,6 +63,7 @@ def home():
 
 
 @app.get("/generate")
+@limiter.limit("10 per minute")
 def generate():
     raw = request.args.get("seed", "")
     if raw.strip() == "":
@@ -57,5 +76,9 @@ def generate():
     return jsonify(name=build_name(seed))
 
 
+@app.errorhandler(429)
+def too_many_requests(e):
+    return jsonify(error="Too many requests. Please wait a minute."), 429
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1")

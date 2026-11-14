@@ -61,7 +61,21 @@ Results: all expected headers were returned, the `<script>` seed was rejected wi
 - Flask's built-in development server is not meant for production. Deployment (Phase 5) will use a production WSGI server.
 - HTTPS is not forced locally (`force_https=False`). It should be enabled when deployed.
 - The development server reveals its software and version in the `Server` header. A production server setup can suppress this.
-- There are no automated tests yet (planned for Phase 4).
+- Tests run locally only. CI security scanning is planned for Phase 4.
+## Running the tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest -v
+```
+
+The suite (13 tests) covers:
+
+- Pages and static files load, with no inline scripts or styles (required by the CSP)
+- Security headers are present on responses
+- Name generation works with and without a seed
+- Invalid seeds (HTML tags, symbols, over-length input) return 400
+- The 11th request within a minute returns 429
 
 ## Roadmap
 

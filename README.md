@@ -39,6 +39,7 @@ FLASK_DEBUG=1 python app.py
 | Safe output | Results are written to the page with `textContent`, never `innerHTML`. |
 | Debug mode | Off by default. It is only enabled when `FLASK_DEBUG=1` is set. |
 | CSRF | Not needed for the current design: `/generate` is a read-only GET that changes no state. This will be revisited in Phase 3 when accounts and POST requests are added. |
+See [THREAT_MODEL.md](THREAT_MODEL.md) for the full threat model, including open items and Phase 3 plans.
 
 ## Testing the controls
 
@@ -101,5 +102,5 @@ bandit app.py --skip B311
 - [x] Phase 2a: seed input with validation
 - [x] Phase 2b: rate limiting, security headers
 - [ ] Phase 3: accounts and favorites using MFA login
-- [ ] Phase 4: tests, CI security scanning, threat model
+- [x] Phase 4: tests, CI security scanning, threat model
 - [ ] Phase 5: deployment

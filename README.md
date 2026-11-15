@@ -61,9 +61,7 @@ Results: all expected headers were returned, the `<script>` seed was rejected wi
 ## Known limitations
 
 - Rate-limit counters are stored in memory, so they reset on restart and are not shared across multiple workers. A production deployment would use Redis or similar.
-- Flask's built-in development server is not meant for production. Deployment (Phase 5) will use a production WSGI server.
-- HTTPS is not forced locally (`force_https=False`). It should be enabled when deployed.
-- The development server reveals its software and version in the `Server` header. A production server setup can suppress this.
+- HTTPS is not forced (`force_https=False`) because the app runs locally. It must be enabled if the app is ever deployed.- The development server reveals its software and version in the `Server` header. A production server setup can suppress this.
 - Security scanning covers dependencies and static analysis only. There is no dynamic testing yet.
 ## Running the tests
 
@@ -101,6 +99,6 @@ bandit app.py --skip B311
 - [x] Phase 1: basic generator
 - [x] Phase 2a: seed input with validation
 - [x] Phase 2b: rate limiting, security headers
-- [ ] Phase 3: accounts and favorites using MFA login
+- [x] Phase 3: dropped. Authentication is covered in a separate project, [mfa-login-demo](https://github.com/JkingDev88/mfa-login-demo)
 - [x] Phase 4: tests, CI security scanning, threat model
-- [ ] Phase 5: deployment
+- [x] Phase 5: dropped. The app is built for local use and is not deployed

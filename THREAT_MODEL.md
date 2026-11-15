@@ -45,14 +45,13 @@ There are no logged-in users and no privileged roles today.
 | 7 | Vulnerable dependency (Supply chain) | A package has a known CVE | pip-audit in CI on every push; pinned versions in requirements.txt | Partial: only catches known issues; Python 3.9 is past end of life and should be upgraded |
 | 8 | Compromised CI or token (Supply chain, Elevation of privilege) | Malicious or hijacked workflow or credential | Workflow permissions limited to contents: read; runner pinned to ubuntu-24.04; push token is fine-grained, single-repo, and expires | Partial: actions are pinned by major version tag, not commit SHA |
 | 9 | Insecure code patterns | Mistakes introduced during development | bandit static scan in CI. Rule B311 (use of random) is skipped on purpose: random is only used to pick words, never for secrets | Mitigated |
-| 10 | Eavesdropping or tampering in transit | Traffic read or modified on plain HTTP | HTTPS not forced locally (force_https=False) | Open until deployment (Phase 5) |
+| 10 | Eavesdropping or tampering in transit | Traffic read or modified on plain HTTP | HTTPS not forced locally (force_https=False) | Accepted: the app runs locally only. Required if it is ever deployed
 | 11 | Repudiation | No record of who did what | No logging yet | Open. Low impact today, needed once accounts exist |
 | 12 | Cross-site request forgery | Forged request changes state | Not applicable: the only route is a read-only GET that changes no state | N/A. Revisit when POST routes are added |
 
-## 5. Threats to design for in Phase 3 (accounts and MFA login)
+## 5. If accounts are ever added
 
-Adding logins turns this into a different kind of application. These are the planned controls.
-
+Accounts are out of scope for this app. If they are added later, this is the checklist. The separate mfa-login-demo project implements most of it.
 | Threat | Planned control |
 |---|---|
 | Password theft from a database leak | Store only salted hashes using a slow algorithm (scrypt, bcrypt, or Argon2); never store or log plaintext |
@@ -71,6 +70,7 @@ Adding logins turns this into a different kind of application. These are the pla
 - Network-scale DDoS (needs infrastructure-level protection)
 - Compromise of the host operating system or hosting provider
 - Physical access to the machine
+- Public internet exposure: the app is run locally only, so hosting, HTTPS, and network-edge controls apply only if that changes
 - Attacks on users' own devices or browsers
 
 ## 7. Review
